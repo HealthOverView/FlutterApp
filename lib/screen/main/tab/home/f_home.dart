@@ -140,6 +140,7 @@ import 'package:get/get.dart';
 import 'package:gosari_app/common/common.dart';
 import 'package:gosari_app/common/widget/round_button_theme.dart';
 import 'package:gosari_app/common/widget/w_round_button.dart';
+import '../../../dialog/d_calendar.dart';
 import '../dialog/d_controller.dart';
 import '../dialog/d_dialog.dart';
 
@@ -148,69 +149,95 @@ class HomeFragment extends GetView<HomeController> {
   Widget build(BuildContext context) {
     Get.put(HomeController());
     return Scaffold(
-      backgroundColor: context.appColors.appBg,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                controller.imgFromCamera();
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.5,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: const Offset(0, 2),
-                      blurRadius: 6,
-                      spreadRadius: 0,
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: context.appColors.appBg,
+        centerTitle: true,
+        title: Text(
+          'GoSaRi',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: context.appColors.mosttext,
+          ),
+        ),
+          leading: IconButton(
+            icon: Icon(Icons.menu, color: Colors.black,), // 아이콘 변경 가능
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+      ),
+      body: Container(
+        color: context.appColors.appBg,
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  controller.imgFromCamera();
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        offset: const Offset(0, 2),
+                        blurRadius: 6,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Image.asset(
+                      'assets/image/splash/splash.png',
+                      width: 50,
+                      height: 50,
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    'assets/image/splash/splash.png',
-                    width: 50,
-                    height: 50,
                   ),
                 ),
               ),
-            ),
-            RoundButton(
-              text: '촬영 분석하기',
-              onTap: () {
-                controller.imgFromCamera();
-              },
-              theme: RoundButtonTheme.grey,
-              fontSize: 20,
-            ),
-            const SizedBox(height: 20),
-            RoundButton(
-              text: '이미지 선택하기',
-              onTap: () {
-                controller.imgFromGallery();
-              },
-              theme: RoundButtonTheme.grey,
-              fontSize: 20,
-            ),
-            const SizedBox(height: 20),
-            RoundButton(
-              text: '결과 확인하기',
-              onTap: () {
-                Get.to(() => DialogFragment());
-              },
-              theme: RoundButtonTheme.grey,
-              fontSize: 20,
-            ),
-            const Spacer(),
-          ],
+              RoundButton(
+                text: '촬영 분석하기',
+                onTap: () {
+                  controller.imgFromCamera();
+                },
+                theme: RoundButtonTheme.grey,
+                fontSize: 20,
+              ),
+              const SizedBox(height: 20),
+              RoundButton(
+                text: '이미지 선택하기',
+                onTap: () {
+                  controller.imgFromGallery();
+                },
+                theme: RoundButtonTheme.grey,
+                fontSize: 20,
+              ),
+              const SizedBox(height: 20),
+              RoundButton(
+                text: '결과 확인하기',
+                onTap: () {
+                  //Get.to(() => DialogFragment());
+                  Navigator.push(
+                    context,
+                    //MaterialPageRoute(builder: (context) => EventCalendarScreen()),
+                    MaterialPageRoute(builder: (context) => DialogFragment()),
+                  );
+                },
+                theme: RoundButtonTheme.grey,
+                fontSize: 20,
+              ),
+              const Spacer(),
+            ],
+          ),
         ),
       ),
     );

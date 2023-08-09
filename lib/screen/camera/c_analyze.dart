@@ -69,6 +69,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
+import 'package:gosari_app/common/common.dart';
+
 class CameraAnalyzeScreen extends StatelessWidget {
   final File? image;
 
@@ -77,6 +79,25 @@ class CameraAnalyzeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: context.appColors.appBg,
+        centerTitle: true,
+        title: Text(
+          'GoSaRi',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: context.appColors.mosttext,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black), // 뒤로가기 아이콘 사용
+          onPressed: () {
+            Navigator.of(context).pop(); // 현재 화면에서 뒤로가기
+          },
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,

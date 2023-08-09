@@ -37,6 +37,7 @@
 // import 'package:after_layout/after_layout.dart';
 // import 'package:gosari_app/common/cli_common.dart';
 import 'package:flutter/services.dart';
+import 'package:gosari_app/screen/main/tab/dialog/d_dialog.dart';
 import 'package:gosari_app/screen/main/tab/tab_item.dart';
 import 'package:gosari_app/screen/main/tab/tab_navigator.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,12 @@ class MainScreenState extends State<MainScreen>
   bool get extendBody => true;
 
   static double get bottomNavigationBarBorderRadius => 30.0;
+  //Drawer
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    _scaffoldKey.currentState?.openDrawer();
+  }
 
   // @override
   // FutureOr<void> afterFirstLayout(BuildContext context) {
@@ -92,23 +99,32 @@ class MainScreenState extends State<MainScreen>
       child: Scaffold(
         extendBody: extendBody,
         //bottomNavigationBar 아래 영역 까지 그림
-        //drawer: const MenuDrawer(),
-        appBar: AppBar(
-          // systemOverlayStyle: SystemUiOverlayStyle(
-          //   statusBarColor: Colors.green, // <-- SEE HERE
-          //   statusBarIconBrightness: Brightness.dark, //<-- For Android SEE HERE (dark icons)
-          //   statusBarBrightness: Brightness.light, //<-- For iOS SEE HERE (dark icons)
-          // ),
-          elevation: 1,
-          backgroundColor: context.appColors.appBg,
-          centerTitle: true, // Center align the title
-          title: Text('GoSaRi',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: context.appColors.mosttext,
-              )), // Added "Analysis" text
-        ),
+        // appBar: _currentTab == DialogFragment()
+        //   ? null
+        //   : AppBar(
+        //
+        //   // systemOverlayStyle: SystemUiOverlayStyle(
+        //   //   statusBarColor: Colors.green, // <-- SEE HERE
+        //   //   statusBarIconBrightness: Brightness.dark, //<-- For Android SEE HERE (dark icons)
+        //   //   statusBarBrightness: Brightness.light, //<-- For iOS SEE HERE (dark icons)
+        //   // ),
+        //   elevation: 1,
+        //   backgroundColor: context.appColors.appBg,
+        //   centerTitle: true, // Center align the title
+        //   title: Text('GoSaRi',
+        //       style: TextStyle(
+        //         fontSize: 30,
+        //         fontWeight: FontWeight.bold,
+        //         color: context.appColors.mosttext,
+        //       )), // Added "Analysis" text
+        //   leading: IconButton(
+        //     icon: Icon(Icons.menu, color: Colors.black,), // 아이콘 변경 가능
+        //     onPressed: () {
+        //       Scaffold.of(context).openDrawer();
+        //     },
+        //   ),
+        // ),
+        drawer: MenuDrawer(),
         body: Padding(
           padding: EdgeInsets.only(
               bottom: extendBody ? 60 - bottomNavigationBarBorderRadius : 0),
