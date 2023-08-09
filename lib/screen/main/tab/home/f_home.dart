@@ -145,6 +145,7 @@ import '../dialog/d_controller.dart';
 import '../dialog/d_dialog.dart';
 
 class HomeFragment extends GetView<HomeController> {
+  final String appVersion = '0.01';
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
@@ -234,6 +235,14 @@ class HomeFragment extends GetView<HomeController> {
                 },
                 theme: RoundButtonTheme.grey,
                 fontSize: 20,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+              Text('version: $appVersion',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: context.appColors.mosttext,
+                  )
               ),
               const Spacer(),
             ],

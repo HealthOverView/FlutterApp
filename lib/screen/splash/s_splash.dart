@@ -13,6 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin{
+  final String appVersion = '0.01';
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
@@ -34,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin{
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: MediaQuery.of(context).size.height*0.2,),
             Image.asset(
               'assets/image/splash/splash.png',
               width: 192,
@@ -45,6 +47,14 @@ class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin{
                 fontWeight: FontWeight.bold,
                 color: context.appColors.mosttext,
               )
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height*0.4,),
+            Text('version: $appVersion',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: context.appColors.mosttext,
+                )
             ),
           ],
         ),
