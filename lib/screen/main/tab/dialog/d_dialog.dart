@@ -85,9 +85,6 @@
 //     _focusedDay.value = focusedDay;
 //   }
 // }
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gosari_app/common/common.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -101,11 +98,13 @@ class DialogFragment extends StatefulWidget {
 }
 
 class _DialogFragmentState extends State<DialogFragment> {
+  Map<String, List<Map<String, dynamic>>> mySelectedEvents = {};
+
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDate;
 
-  Map<String, List> mySelectedEvents = {};
+  //Map<String, List> mySelectedEvents = {};
 
   final titleController = TextEditingController();
   final descpController = TextEditingController();
@@ -119,104 +118,24 @@ class _DialogFragmentState extends State<DialogFragment> {
   }
 
   loadPreviousEvents() {
+    // Load your event data here
+    // You can load the data from your database or any other source
+    // For example:
     mySelectedEvents = {
-      "2022-09-13": [
-        {"eventDescp": "11", "eventTitle": "111"},
-        {"eventDescp": "22", "eventTitle": "22"}
+      "2023-08-17": [
+        {"dateTime": "22:15:43", "result": "가임기"},
+        // More events...
       ],
-      "2022-09-30": [
-        {"eventDescp": "22", "eventTitle": "22"}
-      ],
-      "2022-09-20": [
-        {"eventTitle": "ss", "eventDescp": "ss"}
-      ]
+      // More dates...
     };
   }
 
-  List _listOfDayEvents(DateTime dateTime) {
-    if (mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
-      return mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)]!;
-    } else {
-      return [];
-    }
-  }
+  List<Map<String, dynamic>> _listOfDayEvents(DateTime dateTime) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+    List<Map<String, dynamic>>? events = mySelectedEvents[formattedDate];
 
-  _showAddEventDialog() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          '새로운 이벤트 추가',
-          textAlign: TextAlign.center,
-        ),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: titleController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: '날짜',
-              ),
-            ),
-            TextField(
-              controller: descpController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(labelText: '결과'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            child: const Text('이벤트 추가'),
-            onPressed: () {
-              if (titleController.text.isEmpty &&
-                  descpController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Required title and description'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-                return;
-              } else {
-                setState(() {
-                  if (mySelectedEvents[
-                  DateFormat('yyyy-MM-dd').format(_selectedDate!)] !=
-                      null) {
-                    mySelectedEvents[
-                    DateFormat('yyyy-MM-dd').format(_selectedDate!)]!
-                        .add({
-                      "eventTitle": titleController.text,
-                      "eventDescp": descpController.text,
-                    });
-                  } else {
-                    mySelectedEvents[
-                    DateFormat('yyyy-MM-dd').format(_selectedDate!)] = [
-                      {
-                        "eventTitle": titleController.text,
-                        "eventDescp": descpController.text,
-                      }
-                    ];
-                  }
-                });
-
-                print(
-                    "New Event for backend developer ${json.encode(mySelectedEvents)}");
-                titleController.clear();
-                descpController.clear();
-                Navigator.pop(context);
-              }
-            },
-          )
-        ],
-      ),
-    );
+    // If events is null, return an empty list
+    return events ?? [];
   }
 
   @override
@@ -258,6 +177,7 @@ class _DialogFragmentState extends State<DialogFragment> {
                 });
               }
             },
+            eventLoader: _listOfDayEvents,
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDate, day);
             },
@@ -271,7 +191,6 @@ class _DialogFragmentState extends State<DialogFragment> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
-            eventLoader: _listOfDayEvents,
           ),
           // ..._listOfDayEvents(_selectedDate!).map(
           //       (myEvents) => ListTile(
@@ -286,32 +205,52 @@ class _DialogFragmentState extends State<DialogFragment> {
           //     subtitle: Text('결과:   ${myEvents['결과']}'),
           //   ),
           // ),
+          // Expanded(
+          //   child: SingleChildScrollView(
+          //     child: Column(
+          //       children: _listOfDayEvents(_selectedDate!)
+          //           .map<Widget>((myEvents) => ListTile(
+          //         leading: const Icon(
+          //           Icons.done,
+          //           color: Colors.teal,
+          //         ),
+          //         title: Padding(
+          //           padding: const EdgeInsets.only(bottom: 8.0),
+          //           child: Text('날짜:   ${myEvents['eventTitle']}'),
+          //         ),
+          //         subtitle: Text('결과:   ${myEvents['eventDescp']}'),
+          //       ))
+          //           .toList(), // Convert the Iterable to a List
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                children: _listOfDayEvents(_selectedDate!)
-                    .map<Widget>((myEvents) => ListTile(
-                  leading: const Icon(
-                    Icons.done,
-                    color: Colors.teal,
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text('날짜:   ${myEvents['eventTitle']}'),
-                  ),
-                  subtitle: Text('결과:   ${myEvents['eventDescp']}'),
-                ))
-                    .toList(), // Convert the Iterable to a List
+                children: _listOfDayEvents(_selectedDate!).map<Widget>((event) {
+                  return ListTile(
+                    leading: const Icon(
+                      Icons.done,
+                      color: Colors.teal,
+                    ),
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text('시간: ${event['dateTime']}'),
+                    ),
+                    subtitle: Text('분석 결과: ${event['result']}'),
+                  );
+                }).toList(),
               ),
             ),
           ),
 
+
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddEventDialog(),
-        label: const Text('이멘트 추가'),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () => _showAddEventDialog(),
+      //   label: const Text('이멘트 추가'),
+      // ),
     );
   }
 }

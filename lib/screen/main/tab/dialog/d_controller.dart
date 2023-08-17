@@ -14,18 +14,30 @@ class HomeController extends GetxController {
     imagePicker = ImagePicker();
   }
 
-  void imgFromCamera() async {
+  // void imgFromCamera() async {
+  //   XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
+  //   _image = File(pickedFile!.path);
+  //   navigateToCameraAnalyzeScreen(_image);
+  // }
+  //
+  // void imgFromGallery() async {
+  //   XFile? pickedFile =
+  //   await imagePicker.pickImage(source: ImageSource.gallery);
+  //   _image = File(pickedFile!.path);
+  //   navigateToCameraAnalyzeScreen(_image);
+  // }
+  Future<void> imgFromCameraAndAnalyze() async {
     XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
-    _image = File(pickedFile!.path);
-    navigateToCameraAnalyzeScreen(_image);
+    File? image = File(pickedFile!.path);
+    navigateToCameraAnalyzeScreen(image);
   }
 
-  void imgFromGallery() async {
-    XFile? pickedFile =
-    await imagePicker.pickImage(source: ImageSource.gallery);
-    _image = File(pickedFile!.path);
-    navigateToCameraAnalyzeScreen(_image);
+  Future<void> imgFromGalleryAndAnalyze() async {
+    XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    File? image = File(pickedFile!.path);
+    navigateToCameraAnalyzeScreen(image);
   }
+
 
   void navigateToCameraAnalyzeScreen(File? image) {
     Get.to(() => CameraAnalyzeScreen(image: image));

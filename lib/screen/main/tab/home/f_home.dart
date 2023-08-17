@@ -145,7 +145,8 @@ import '../dialog/d_controller.dart';
 import '../dialog/d_dialog.dart';
 
 class HomeFragment extends GetView<HomeController> {
-  final String appVersion = '0.01';
+  final String appVersion = '0.02';
+
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
@@ -177,9 +178,9 @@ class HomeFragment extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {
-                  controller.imgFromCamera();
-                },
+                // onTap: () {
+                //   controller.imgFromCamera();
+                // },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.5,
                   height: MediaQuery.of(context).size.height * 0.5,
@@ -208,7 +209,7 @@ class HomeFragment extends GetView<HomeController> {
               RoundButton(
                 text: '촬영 분석하기',
                 onTap: () {
-                  controller.imgFromCamera();
+                  controller.imgFromCameraAndAnalyze();
                 },
                 theme: RoundButtonTheme.grey,
                 fontSize: 20,
@@ -217,7 +218,7 @@ class HomeFragment extends GetView<HomeController> {
               RoundButton(
                 text: '이미지 선택하기',
                 onTap: () {
-                  controller.imgFromGallery();
+                  controller.imgFromGalleryAndAnalyze();
                 },
                 theme: RoundButtonTheme.grey,
                 fontSize: 20,
@@ -236,7 +237,7 @@ class HomeFragment extends GetView<HomeController> {
                 theme: RoundButtonTheme.grey,
                 fontSize: 20,
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+              SizedBox(height: MediaQuery.of(context).size.height*0.05,),
               Text('version: $appVersion',
                   style: TextStyle(
                     fontSize: 15,

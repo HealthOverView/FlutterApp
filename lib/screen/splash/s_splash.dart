@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin{
-  final String appVersion = '0.01';
+  final String appVersion = '0.02';
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
