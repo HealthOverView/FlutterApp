@@ -170,22 +170,22 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 child: Row(
                   children: [
                     const Width(10),
-                    DropdownButton<String>(
-                      items: [
-                        menu(currentLanguage),
-                        menu(Language.values.where((element) => element != currentLanguage).first),
-                      ],
-                      onChanged: (value) async {
-                        if (value == null) {
-                          return;
-                        }
-                        await context.setLocale(Language.find(value.toLowerCase()).locale);
-                      },
-                      value: describeEnum(currentLanguage).capitalizeFirst,
-                      underline: const SizedBox.shrink(),
-                      elevation: 1,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    // DropdownButton<String>(
+                    //   items: [
+                    //     menu(currentLanguage),
+                    //     menu(Language.values.where((element) => element != currentLanguage).first),
+                    //   ],
+                    //   onChanged: (value) async {
+                    //     if (value == null) {
+                    //       return;
+                    //     }
+                    //     await context.setLocale(Language.find(value.toLowerCase()).locale);
+                    //   },
+                    //   value: describeEnum(currentLanguage).capitalizeFirst,
+                    //   underline: const SizedBox.shrink(),
+                    //   elevation: 1,
+                    //   borderRadius: BorderRadius.circular(10),
+                    // ),
                   ],
                 )),
             onTap: () async {},
@@ -193,23 +193,23 @@ class _MenuDrawerState extends State<MenuDrawer> {
         ],
       );
 
-  DropdownMenuItem<String> menu(Language language) {
-    return DropdownMenuItem(
-      value: describeEnum(language).capitalizeFirst,
-      child: Row(
-        children: [
-          flag(language.flagPath),
-          const Width(8),
-          describeEnum(language)
-              .capitalizeFirst!
-              .text
-              .color(Theme.of(context).textTheme.bodyLarge?.color)
-              .size(12)
-              .makeWithDefaultFont(),
-        ],
-      ),
-    );
-  }
+  // DropdownMenuItem<String> menu(Language language) {
+  //   return DropdownMenuItem(
+  //     value: describeEnum(language).capitalizeFirst,
+  //     child: Row(
+  //       children: [
+  //         flag(language.flagPath),
+  //         const Width(8),
+  //         describeEnum(language)
+  //             .capitalizeFirst!
+  //             .text
+  //             .color(Theme.of(context).textTheme.bodyLarge?.color)
+  //             .size(12)
+  //             .makeWithDefaultFont(),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget flag(String path) {
     return SimpleShadow(

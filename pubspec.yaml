@@ -83,6 +83,8 @@ dependencies:
   http: ^1.1.0
   sqflite: ^2.3.0
 
+  image_gallery_saver: ^2.0.3
+
 
 dev_dependencies:
   flutter_test:
@@ -126,6 +128,7 @@ flutter:
     - assets/image/flag/
     - assets/image/splash/
     - assets/image/darkmode/
+    - assets/image/analyze/
     - assets/translations/
     - assets/
 

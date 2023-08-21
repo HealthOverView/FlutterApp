@@ -25,4 +25,8 @@ class ThemeUtil {
         break;
     }
   }
+
+  static void setTheme(BuildContext context, CustomTheme theme) {
+    context.changeTheme(theme);
+  }
 }

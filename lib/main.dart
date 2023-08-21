@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'common/data/preference/app_preferences.dart';
+import 'data/db/http.dart';
 
 void main() async {
+  final dbHelper = DatabaseHelper();
+
   // final bindings = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
   WidgetsFlutterBinding.ensureInitialized();
+  await dbHelper.initDatabase();
+
   await EasyLocalization.ensureInitialized();
   await AppPreferences.init();
 
