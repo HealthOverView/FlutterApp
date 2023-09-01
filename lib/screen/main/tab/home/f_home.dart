@@ -10,7 +10,7 @@ import '../dialog/d_controller.dart';
 import '../dialog/d_dialog.dart';
 
 class HomeFragment extends GetView<HomeController> {
-  final String appVersion = '0.04';
+  final String appVersion = '0.05';
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +30,12 @@ class HomeFragment extends GetView<HomeController> {
             color: context.appColors.mosttext,
           ),
         ),
-          leading: IconButton(
-            icon: Icon(Icons.menu, color: Colors.black,), // 아이콘 변경 가능
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+          // leading: IconButton(
+          //   icon: Icon(Icons.menu, color: Colors.black,), // 아이콘 변경 가능
+          //   onPressed: () {
+          //     Scaffold.of(context).openDrawer();
+          //   },
+          // ),
       ),
       body: Container(
         color: context.appColors.appBg,

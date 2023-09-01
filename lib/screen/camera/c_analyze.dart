@@ -89,8 +89,8 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Reshooting Required'),
-                content: Text('The analysis did not provide an expected result. Please reshoot the image.'),
+                title: Text('촬영 오류'),
+                content: Text('다시 분석을 시도해주세요'),
                 actions: [
                   TextButton(
                     onPressed: () {
