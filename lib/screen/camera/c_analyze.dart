@@ -50,14 +50,14 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
       _uploading = true;
     });
 
-    var uri = Uri.parse('http://192.168.1.192:3060/diagnosis');
+    var uri = Uri.parse('http://192.168.1.192:3061/diagnosis');
 
     var request = http.MultipartRequest('POST', uri);
     print(widget.image!.path);
     request.files.add(await http.MultipartFile.fromPath('img', widget.image!.path));
 
-    try { //responsBody를 받을때 영어를 한글로 반
-      var response = await request.send().timeout(Duration(seconds: 8));
+    try { //responsBody를 받을때 영어를 한글로 반환
+      var response = await request.send().timeout(Duration(seconds: 20));
       print('HTTP Response Code: ${response.statusCode}');
       if (response.statusCode == 200) {
         // Encode the image as base64

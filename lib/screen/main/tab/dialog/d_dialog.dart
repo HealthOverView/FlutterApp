@@ -163,7 +163,7 @@ class _DialogFragmentState extends State<DialogFragment> {
                         //서버에 저장된 이미지를 불러옴
                         ClipOval(
                           child: Image.network(
-                            'http://192.168.1.192:3060/image?img_name=${event['imageFileName']}',
+                            'http://192.168.1.192:3061/image?img_name=${event['imageFileName']}',
                             width: MediaQuery.of(context).size.width * 0.7,
                             height: MediaQuery.of(context).size.height * 0.33,
                             fit: BoxFit.fill,
@@ -175,7 +175,7 @@ class _DialogFragmentState extends State<DialogFragment> {
                           icon: Icon(Icons.save),
                           onPressed: () async {
                             // 이미지를 갤러리에 저장
-                            String imageUrl = 'http://192.168.1.192:3060/image?img_name=${event['imageFileName']}';
+                            String imageUrl = 'http://192.168.1.192:3061/image?img_name=${event['imageFileName']}';
                             ByteData byteData = await NetworkAssetBundle(Uri.parse(imageUrl)).load('');
                             Uint8List imageBytes = byteData.buffer.asUint8List();
                             final result = await ImageGallerySaver.saveImage(imageBytes);
@@ -296,7 +296,7 @@ class _DialogFragmentState extends State<DialogFragment> {
                       ),
                       child: ClipOval(
                         child: Image.network(
-                          'http://192.168.1.192:3060/image?img_name=${event['imageFileName']}',
+                          'http://192.168.1.192:3061/image?img_name=${event['imageFileName']}',
                           width: MediaQuery.of(context).size.width * 0.7,
                           height: MediaQuery.of(context).size.height * 0.33,
                           fit: BoxFit.fill,
