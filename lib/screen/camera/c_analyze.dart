@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gosari_app/common/common.dart';
 import 'package:gosari_app/screen/main/s_main.dart';
-import 'package:http/http.dart' as http; // Import the http package
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
-import 'package:gosari_app/screen/main/tab/dialog/d_controller.dart';
-import '../../common/widget/round_button_theme.dart';
-import '../../common/widget/w_round_button.dart';
-import '../../data/db/http.dart';
-import '../main/tab/dialog/d_dialog.dart';
+import 'package:gosari_app/common/widget/round_button_theme.dart';
+import 'package:gosari_app/common/widget/w_round_button.dart';
+import 'package:gosari_app/database/d_databasehelper.dart';
+import 'package:gosari_app/screen/main/tab/dialog/d_dialog.dart';
+import 'package:gosari_app/screen/main/tab/home/f_home.controller.dart';
 
 
 class CameraAnalyzeScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
     dbHelper.initDatabase();
     _uploadImage(); // Automatically upload and display image
   }
-
+  //메인페이지로 이동하는 메서드
   void _navigateToMainPage() {
     Navigator.of(context).popUntil((route) => route.isFirst); // Pop all routes except the first (home) route
     Navigator.pushReplacement(
@@ -43,7 +43,7 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
     );
   }
 
-
+  //서버에서 가져온 이미지 처리
   Future<void> _uploadImage() async {
 
     setState(() {
@@ -56,8 +56,7 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
     print(widget.image!.path);
     request.files.add(await http.MultipartFile.fromPath('img', widget.image!.path));
 
-    try {
-
+    try { //responsBody를 받을때 영어를 한글로 반
       var response = await request.send().timeout(Duration(seconds: 8));
       print('HTTP Response Code: ${response.statusCode}');
       if (response.statusCode == 200) {
@@ -105,9 +104,6 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
           );
           return;
         }
-
-
-
         setState(() {
           _responseBody = '결과: $displayedMessage';
           dbHelper.insertEvent({
@@ -291,7 +287,7 @@ class _CameraAnalyzeScreenState extends State<CameraAnalyzeScreen> {
                 theme: RoundButtonTheme.grey,
                 fontSize: 20,
               ),
-            //
+            // 다시 촬영하기 버튼 출력
             // if(_responseMessage.isNotEmpty)
             //   RoundButton(
             //     text: '다시 촬영하기',

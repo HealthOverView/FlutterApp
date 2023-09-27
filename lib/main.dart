@@ -1,20 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_native_splash/flutter_native_splash.dart';
-
 import 'app.dart';
 import 'common/data/preference/app_preferences.dart';
-import 'data/db/http.dart';
+import 'package:gosari_app/database/d_databasehelper.dart';
 
 void main() async {
+  //db 정의
   final dbHelper = DatabaseHelper();
-
-  // final bindings = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: bindings);
   WidgetsFlutterBinding.ensureInitialized();
   await dbHelper.initDatabase();
 
+  // EasyLocalization을 초기화
   await EasyLocalization.ensureInitialized();
+  // AppPreferences를 초기화
   await AppPreferences.init();
 
   runApp(EasyLocalization(

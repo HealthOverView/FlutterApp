@@ -1,6 +1,5 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:gosari_app/common/cli_common.dart';
-
 import 'package:gosari_app/common/common.dart';
 import 'package:gosari_app/screen/main/s_main.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,9 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+//앱을 처음 실행했을 때 보이는 인트로 화면(스플래쉬) 클래스 생성
 class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin{
+  //앱 버전
   final String appVersion = '0.05';
 
   @override
@@ -23,7 +24,6 @@ class _SplashScreenState extends State<SplashScreen> with AfterLayoutMixin{
   }
   @override
   void initState() {
-      //Nav.clearAllAndPush(const MainScreen());
     super.initState();
   }
   @override

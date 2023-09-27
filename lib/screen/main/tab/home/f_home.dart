@@ -3,12 +3,10 @@ import 'package:get/get.dart';
 import 'package:gosari_app/common/common.dart';
 import 'package:gosari_app/common/widget/round_button_theme.dart';
 import 'package:gosari_app/common/widget/w_round_button.dart';
-import '../../../../common/theme/custom_theme.dart';
-import '../../../../common/theme/theme_util.dart';
-import '../../../dialog/d_calendar.dart';
-import '../dialog/d_controller.dart';
-import '../dialog/d_dialog.dart';
+import 'package:gosari_app/screen/main/tab/home/f_home.controller.dart';
+import 'package:gosari_app/screen/main/tab/dialog/d_dialog.dart';
 
+//홈화면 Getx 방식
 class HomeFragment extends GetView<HomeController> {
   final String appVersion = '0.05';
 
@@ -30,13 +28,8 @@ class HomeFragment extends GetView<HomeController> {
             color: context.appColors.mosttext,
           ),
         ),
-          // leading: IconButton(
-          //   icon: Icon(Icons.menu, color: Colors.black,), // 아이콘 변경 가능
-          //   onPressed: () {
-          //     Scaffold.of(context).openDrawer();
-          //   },
-          // ),
       ),
+      //홈 화면 (로고, 버튼(촬영분석,이미지선택,결과 확인))
       body: Container(
         color: context.appColors.appBg,
         child: Center(

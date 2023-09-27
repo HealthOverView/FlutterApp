@@ -1,14 +1,11 @@
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gosari_app/common/common.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
-import '../../../../common/theme/theme_util.dart';
-import '../../../../data/db/http.dart';
+import 'package:gosari_app/database/d_databasehelper.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 
@@ -27,8 +24,6 @@ class _DialogFragmentState extends State<DialogFragment> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDate = DateTime.now();
 
-  //Map<String, List> mySelectedEvents = {};
-
   final titleController = TextEditingController();
   final descpController = TextEditingController();
 
@@ -37,27 +32,14 @@ class _DialogFragmentState extends State<DialogFragment> {
 
     super.initState();
     loadPreviousEvents();
-    // 현재 날짜를 한번 클랙
+    // 현재 날짜를 한번 클릭
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         _selectedDate = _focusedDay;
       });
     });
   }
-
-  // loadPreviousEvents() {
-  //   // Load your event data here
-  //   // You can load the data from your database or any other source
-  //   // For example:
-  //   mySelectedEvents = {
-  //     "2023-08-17": [
-  //       {"dateTime": "22:15:43", "result": "가임기"},
-  //       // More events...
-  //     ],
-  //     // More dates...
-  //   };
-  // }
-
+  // 이전 이벤트를 로드
   Future<void> loadPreviousEvents() async {
     List<Map<String, dynamic>> events = await dbHelper.getAllEvents();
 
@@ -82,7 +64,7 @@ class _DialogFragmentState extends State<DialogFragment> {
     }
   }
 
-
+  // 데이터베이스에서 이벤트를 로드
   void loadEventsFromDatabase() async {
     List<Map<String, dynamic>> events = await dbHelper.getAllEvents();
 
@@ -100,15 +82,15 @@ class _DialogFragmentState extends State<DialogFragment> {
       });
     }
   }
-
+  // 선택한 날짜에 해당하는 이벤트 목록을 반환
   List<Map<String, dynamic>> _listOfDayEvents(DateTime dateTime) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
     List<Map<String, dynamic>>? events = mySelectedEvents[formattedDate];
 
-    // If events is null, return an empty list
+    // 이벤트가 없으면 빈 리스트를 반환
     return events ?? [];
   }
-
+  //이벤트 삭제
   Future<void> _deleteEvent(Map<String, dynamic> event) async {
     bool confirm = await showDialog(
       context: context,
@@ -131,20 +113,18 @@ class _DialogFragmentState extends State<DialogFragment> {
     );
 
     if (confirm != null && confirm) {
-      // Delete the event from the database
+      // DB에서 이벤트 삭제
       await dbHelper.deleteEvent(event['id']);
-
-      // Remove the deleted event from the mySelectedEvents map
+      // 삭제된 이벤트를 mySelectedEvents 맵에서도 제거
       final selectedDateString = DateFormat('yyyy-MM-dd').format(_selectedDate!);
       mySelectedEvents[selectedDateString]?.removeWhere(
             (item) => item['id'] == event['id'],
       );
-
-      // Refresh the UI by calling setState
+      // UI를 새로고침
       setState(() {});
     }
   }
-
+  // 이벤트 상세 정보 다이얼로그
   Future<void> _showEventDetailsDialog(Map<String, dynamic> event) async {
     await showDialog(
       context: context,
@@ -180,6 +160,7 @@ class _DialogFragmentState extends State<DialogFragment> {
                     child: Stack(
                       alignment: Alignment.bottomRight, // Align the IconButton to the bottom right corner
                       children: [
+                        //서버에 저장된 이미지를 불러옴
                         ClipOval(
                           child: Image.network(
                             'http://192.168.1.192:3060/image?img_name=${event['imageFileName']}',
@@ -188,11 +169,12 @@ class _DialogFragmentState extends State<DialogFragment> {
                             fit: BoxFit.fill,
                           ),
                         ),
+                        //서버에 저장된 이미지를 불러옴
                         IconButton(
                           iconSize: 50.0,
                           icon: Icon(Icons.save),
                           onPressed: () async {
-                            // Save image to the gallery
+                            // 이미지를 갤러리에 저장
                             String imageUrl = 'http://192.168.1.192:3060/image?img_name=${event['imageFileName']}';
                             ByteData byteData = await NetworkAssetBundle(Uri.parse(imageUrl)).load('');
                             Uint8List imageBytes = byteData.buffer.asUint8List();
@@ -233,12 +215,6 @@ class _DialogFragmentState extends State<DialogFragment> {
       },
     );
   }
-  void _toggleTheme() {
-    setState(() {
-      ThemeUtil.toggleTheme(context);
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -265,6 +241,7 @@ class _DialogFragmentState extends State<DialogFragment> {
       ),
       body: Column(
         children: [
+          //테이블캘린더 : 기록이 있으면 해당 날짜에 점으로 표시
           TableCalendar(
             availableCalendarFormats: {CalendarFormat.month: 'Month'},
             firstDay: DateTime(2022),
@@ -272,26 +249,11 @@ class _DialogFragmentState extends State<DialogFragment> {
             // Set the last day to a later date
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
-            // onDaySelected: (selectedDay, focusedDay) {
-            //   if (!i(_selectedDate, selectedDay)) {
-            //     setState(() {
-            //       _selectedDate = selectedDay;
-            //       _focusedDay = focusedDay;
-            //     });
-            //   }
-            // },
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDate = selectedDay;
                 //_focusedDay = focusedDay;
               });
-              // if (_selectedDate == null) {
-              //   setState(() {
-              //     _selectedDate = selectedDay;
-              //     _focusedDay = focusedDay;
-              //   });
-              // }
-
             },
 
             eventLoader: _listOfDayEvents,
@@ -309,6 +271,7 @@ class _DialogFragmentState extends State<DialogFragment> {
               _focusedDay = focusedDay;
             },
           ),
+          //캘린더 하단에 해당 날짜의 기록을 리스트로 보여줌(스크롤 가능)
           Expanded(
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
@@ -358,15 +321,8 @@ class _DialogFragmentState extends State<DialogFragment> {
               ),
             ),
           ),
-
-
-
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () => _showAddEventDialog(),
-      //   label: const Text('이멘트 추가'),
-      // ),
     );
   }
 

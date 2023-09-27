@@ -1,9 +1,6 @@
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gosari_app/common/common.dart';
 import 'package:gosari_app/common/theme/custom_theme_app.dart';
-import 'package:gosari_app/screen/main/tab/dialog/d_controller.dart';
-//import 'package:gosari_app/screen/main/s_main.dart';
 import 'package:gosari_app/screen/splash/s_splash.dart';
 import 'package:flutter/material.dart';
 
@@ -24,24 +21,21 @@ class AppState extends State<App> with Nav, WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-
+    //WidgetsBinding.instance.addObserver(this);
   }
-
-
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    //WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    //메인커스텀테마 생성
     return CustomThemeApp(
       child: Builder(builder: (context) {
         return GetMaterialApp(
-          //initialBinding: HomeController(),
           debugShowCheckedModeBanner: false,
           navigatorKey: App.navigatorKey,
           localizationsDelegates: context.localizationDelegates,
@@ -54,22 +48,5 @@ class AppState extends State<App> with Nav, WidgetsBindingObserver {
         );
       }),
     );
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        App.isForeground = true;
-        break;
-      case AppLifecycleState.inactive:
-        break;
-      case AppLifecycleState.paused:
-        App.isForeground = false;
-        break;
-      case AppLifecycleState.detached:
-        break;
-    }
-    super.didChangeAppLifecycleState(state);
   }
 }
